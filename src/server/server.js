@@ -1,13 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const Question = require('./src/db/db-schema');
+const Question = require('./db/db-schema');
 const morgan = require('morgan');
 
 const passport = require('passport');
 const GithubStrategy = require('passport-github').Strategy;
-const config = require('./config');
+const config = require('../../config');
 const session = require('express-session');
+const router = require('./router');
 
 passport.use(new GithubStrategy({
   clientID: config.githubID,
@@ -67,59 +68,8 @@ app.use((req, res, next) => {
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.resolve(__dirname, './src/client')));
-
-app.get('/auth/github', passport.authenticate('github'));
-
-app.get('/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/auth/github' }),
-    (req, res) => res.redirect('/'));
-
-app.get('/', ensureAuth, (req, res) => res.send('logged in'));
-
-app.get('/api/questions', ensureAuth, (req, res) => {
-  // request all question data form DB, send data in response
-  Question.find({}, (err, questions) => {
-    if (err) {
-      console.log(err);
-      res.status(404).send(err);
-    } else {
-      res.status(200).send(questions);
-    }
-  });
-});
-
-app.post('/api/questions', ensureAuth, (req, res) => {
-  // add new questions to the DB
-  const newQuestion = new Question({
-    questionText: req.body.text,
-    votes: 0,
-    answered: false,
-  });
-
-  newQuestion.save((err, question) => {
-    if (err) {
-      console.log('ERRROR!', err);
-      res.status(500).send(err);
-    } else {
-      res.status(200).send(question);
-    }
-  });
-});
-
-app.put('/api/questions', (req, res) => {
-  const id = req.body._id;
-  // make edits to stored questions, return new version
-  Question.findByIdAndUpdate(id, req.body, { new: true }, (err, data) => {
-    if (err) console.error(err);
-    res.send(data);
-  });
-});
-
-app.delete('/api/questions', (req, res) => {
-  Question.findByIdAndRemove(req.body)
-  .then(() => res.status(202).send());
-});
+app.use(express.static(path.join(__dirname, '../client')));
+app.use(router);
 
 app.listen(port, () => {
   console.log(`Listening to port ${port}`);
