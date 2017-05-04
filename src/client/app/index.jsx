@@ -2,21 +2,37 @@ import React from 'react';
 import { render } from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+<<<<<<< HEAD
 import AppBar from 'material-ui/AppBar'
+=======
+import AppBar from 'material-ui/AppBar';
+>>>>>>> server-modules
 
-import QueueComponent from './QueueComponent.jsx';
-import QuestionFormComponent from './QuestionFormComponent.jsx';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from 'react-router-dom';
 
-const putRequest = (question) =>
-  fetch('/api/questions', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(question),
-  });
+import AuthExample from './Routes.jsx';
+import LoginComponent from './Login.jsx';
+import App from './app.jsx';
 
-class App extends React.Component {
+// const fakeAuth = {
+//   loggedIn: false,
+//   authenticate(cb) {
+//     this.loggedIn = true;
+//     setTimeout(cb, 100);
+//   },
+//   signout(cb) {
+//     this.loggedIn = false;
+//     setTimeout(cb, 100);
+//   },
+// };
+
+class Main extends React.Component {
   constructor(props) {
     super(props);
 
@@ -25,8 +41,9 @@ class App extends React.Component {
     injectTapEventPlugin();
 
     this.state = {
-      questions: [],
+      loggedIn: true,
     };
+<<<<<<< HEAD
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getQuestions = this.getQuestions.bind(this);
     this.handleUpvote = this.handleUpvote.bind(this);
@@ -51,41 +68,38 @@ class App extends React.Component {
       };
     },
   ));
+=======
+    this.logout = this.logout.bind(this);
+    this.login = this.login.bind(this);
   }
-  handleUpvote(question) {
-    const q = question;
-    q.votes += 1;
-    putRequest(question)
-      .catch((err) => {
-        console.error(err);
-        q.votes -= 1;
-      });
-  }
-  handleAnswered(question) {
-    const q = question;
-    q.answered = true;
-    putRequest(question)
-      .catch((err) => {
-        console.error(err);
-        q.answered = false;
-      });
-  }
-  handleDelete(question) {
-    const _id = question._id;
-    console.log(_id);
-    fetch('/api/questions', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ _id }),
+  login(cb) {
+    /*
+     *setState is async, so place callback in an anonymous function?
+     */
+    this.setState({
+      loggedIn: true,
     });
+    cb();
+>>>>>>> server-modules
+  }
+  logout(cb) {
+    this.setState({
+      loggedIn: false,
+    });
+<<<<<<< HEAD
     this.getQuestions();
   }
   componentDidMount() {
+=======
+>>>>>>> server-modules
     this.getQuestions();
-    this.interval = setInterval(() => this.getQuestions(), 2000);
+  }
+    cb();
   }
   render() {
+    console.log(this.state.loggedIn);
     return (
+<<<<<<< HEAD
       <MuiThemeProvider>
         <div>
           <AppBar
@@ -110,8 +124,39 @@ class App extends React.Component {
             />
         </div>
       </MuiThemeProvider>
+=======
+      <Router>
+        <div>
+          <Route exact path="/" render={() => (
+            this.state.loggedIn ? (
+              <Redirect to="/questions" />
+            ) : (
+              <Redirect push to="/login" />
+            )
+          )} />
+          <Route path="/questions"
+            render={ () => (
+              this.state.loggedIn ? (
+                <App logout={this.logout}
+                  login={this.login}
+                />
+              ) : (
+                <Redirect to="/" />
+              )
+            )
+          }
+            />
+          <Route path="/login" render={() => (
+            <LoginComponent
+              login={this.login}
+              loggedIn={this.state.loggedIn} />
+          )}/>
+          </div>
+      </Router>
+>>>>>>> server-modules
     );
   }
 }
 
-render(<App />, document.getElementById('app'));
+injectTapEventPlugin();
+render(<Main />, document.getElementById('app'));
