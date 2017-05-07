@@ -1,4 +1,6 @@
 import React from 'react';
+import CodeMirror from 'codemirror';
+import javascript from 'codemirror/mode/javascript/javascript'
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 import Paper from 'material-ui/Paper';
@@ -94,10 +96,7 @@ class QuestionFormComponent extends React.Component {
     });
     this.refs.tagBar.setState({ searchText: '' });
   }
-<<<<<<< HEAD
 
-=======
->>>>>>> highlight form component code
   handleEdit(event) {
     event.preventDefault();
     const question = this.props.question;
@@ -139,10 +138,23 @@ class QuestionFormComponent extends React.Component {
               onChange={this.handleInputChange} />
             <CodeZone
               name="codeSnippet"
+<<<<<<< HEAD
               onChange={this.handleInputChange}
               codeSnippet={this.state.codeSnippet}
               value = {this.state.codeSnippet}
               />
+=======
+              className="code-text-form"
+              fullWidth={true}
+              value={this.state.codeSnippet}
+              multiLine={true}
+              floatingLabelText="Add a code snippet (optional)"
+              onChange={this.handleInputChange} />
+            <textarea
+              ref="codeZone">
+                yo
+              </textarea>
+>>>>>>> wee code highlighting
             <br/>
             <AutoComplete
               ref="tagBar"
