@@ -9,6 +9,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import TagArray from './TagArray.jsx';
+import CodeZone from './CodeZone.jsx';
 
 const allTags = ['Node', 'Express', 'React', 'Angular', 'Closures', 'Promises'];
 
@@ -37,11 +38,13 @@ class QuestionFormComponent extends React.Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
+    console.log(`{${name}: ${value}}`);
 
     this.setState({
       [name]: value,
     });
   }
+
 
   handleTagAdd(tag) {
     const appliedTags = this.state.appliedTags;
@@ -133,18 +136,12 @@ class QuestionFormComponent extends React.Component {
               multiLine={true}
               floatingLabelText="Ask a question..."
               onChange={this.handleInputChange} />
-            <TextField
+            <CodeZone
               name="codeSnippet"
-              className="code-text-form"
-              fullWidth={true}
-              value={this.state.codeSnippet}
-              multiLine={true}
-              floatingLabelText="Add a code snippet (optional)"
-              onChange={this.handleInputChange} />
-            <textarea
-              ref="codeZone">
-                yo
-              </textarea>
+              onChange={this.handleInputChange}
+              codeSnippet={this.state.codeSnippet}
+              value = {this.state.codeSnippet}
+              />
             <br/>
             <AutoComplete
               ref="tagBar"
@@ -178,3 +175,13 @@ class QuestionFormComponent extends React.Component {
 }
 
 export default QuestionFormComponent;
+
+//
+// <TextField
+//   name="codeSnippet"
+//   className="code-text-form"
+//   fullWidth={true}
+//   value={this.state.codeSnippet}
+//   multiLine={true}
+//   floatingLabelText="Add a code snippet (optional)"
+//   onChange={this.handleInputChange} />
