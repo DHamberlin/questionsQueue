@@ -1,4 +1,6 @@
 import React from 'react';
+import CodeMirror from 'codemirror';
+import javascript from 'codemirror/mode/javascript/javascript'
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 import Paper from 'material-ui/Paper';
@@ -91,6 +93,7 @@ class QuestionFormComponent extends React.Component {
     });
     this.refs.tagBar.setState({ searchText: '' });
   }
+<<<<<<< HEAD
   handleEdit(event) {
     event.preventDefault();
     const question = this.props.question;
@@ -99,6 +102,16 @@ class QuestionFormComponent extends React.Component {
     question.tags = this.state.appliedTags;
     this.props.handleEdit(question);
   }
+=======
+  componentDidMount() {
+    const editor = CodeMirror.fromTextArea(this.refs.codeZone, {
+      lineNumbers: true,
+      mode: 'javascript',
+      // matchBrackets: true,
+    });
+  }
+
+>>>>>>> highlight
   render() {
     // options for dialog pop-up
     // there may be a better place to put these
@@ -137,6 +150,11 @@ class QuestionFormComponent extends React.Component {
               multiLine={true}
               floatingLabelText="Add a code snippet (optional)"
               onChange={this.handleInputChange} />
+            <textarea
+              ref="codeZone">
+                yo
+              </textarea>
+            <br/>
             <AutoComplete
               ref="tagBar"
               floatingLabelText="Add tags..."
