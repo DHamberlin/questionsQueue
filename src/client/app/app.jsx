@@ -10,7 +10,7 @@ import QuestionFormComponent from './QuestionFormComponent.jsx';
 import SearchBar from './SearchBar.jsx';
 
 
-const putRequest = (question) =>
+const putRequest = question =>
   fetch('/api/questions', {
     credentials: 'include',
     method: 'PUT',

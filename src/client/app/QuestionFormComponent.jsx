@@ -23,6 +23,7 @@ class QuestionFormComponent extends React.Component {
       appliedTags: this.props.question ? this.props.question.tags : [],
       dialogOpen: false,
       snackbar: false,
+      showCode: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,6 +33,7 @@ class QuestionFormComponent extends React.Component {
     this.closeDialog = this.closeDialog.bind(this);
     this.closeSnackbar = this.closeSnackbar.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.toggleCode = this.toggleCode.bind(this);
   }
 
   handleInputChange(event) {
@@ -82,6 +84,10 @@ class QuestionFormComponent extends React.Component {
   openDialog() { this.setState({ dialogOpen: true }); }
   closeDialog() { this.setState({ dialogOpen: false }); }
   closeSnackbar() { this.setState({ snackbar: false }); }
+  toggleCode() {
+    const showCode = !this.state.showCode;
+    this.setState({ showCode });
+  }
 
   handleSubmit(event) {
     event.preventDefault();
@@ -124,6 +130,16 @@ class QuestionFormComponent extends React.Component {
       />,
     ];
 
+    const codeZone = (
+      <CodeZone
+        name="codeSnippet"
+        display={this.state.showCode ? 'block' : 'none'}
+        onChange={this.handleInputChange}
+        codeSnippet={this.state.codeSnippet}
+        value = {this.state.codeSnippet}
+      />
+    );
+
     return (
       <Paper className="question-form" >
         <form onSubmit={this.props.handleEdit ? this.handleEdit : this.handleSubmit} >
@@ -136,12 +152,11 @@ class QuestionFormComponent extends React.Component {
               multiLine={true}
               floatingLabelText="Ask a question..."
               onChange={this.handleInputChange} />
-            <CodeZone
-              name="codeSnippet"
-              onChange={this.handleInputChange}
-              codeSnippet={this.state.codeSnippet}
-              value = {this.state.codeSnippet}
+            <FlatButton onClick={this.toggleCode}
+              label={this.state.showCode ? 'Hide code' : 'Add some code'}
+              style={{ backgroundColor: '#e0e0e0' }}
               />
+              {this.state.showCode ? codeZone : null}
             <br/>
             <AutoComplete
               ref="tagBar"
