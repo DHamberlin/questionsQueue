@@ -7,9 +7,7 @@ class CodeZone extends React.Component {
     super(props);
     this.state = {
       codeEditor: null,
-      showButton: props.showButton !== undefined ? props.showButton : true,
       readOnly: props.readOnly || false,
-      showCode: props.showCode !== undefined ? props.showCode : true,
     };
     this.handleCodeChange = this.handleCodeChange.bind(this);
   }
@@ -49,7 +47,6 @@ class CodeZone extends React.Component {
       name={this.props.name}
       ref="codeZone"
       rows={10}
-      display={this.state.showCode ? 'block' : 'none'}
       value={this.props.codeSnippet} >
       </textarea>
     );
