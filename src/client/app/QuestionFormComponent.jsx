@@ -24,6 +24,7 @@ class QuestionFormComponent extends React.Component {
       dialogOpen: false,
       snackbar: false,
       showCode: false,
+      showButtonText: this.props.question ? 'Show Code' : 'Add some code',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,8 +41,6 @@ class QuestionFormComponent extends React.Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    console.log(`{${name}: ${value}}`);
-
     this.setState({
       [name]: value,
     });
@@ -56,9 +55,8 @@ class QuestionFormComponent extends React.Component {
       if (this.props.user.role === 'admin') {
         this.openDialog();
         return;
-      } else {
-        return;
       }
+      return;
     }
     this.confirmNewTag();
   }
@@ -99,6 +97,7 @@ class QuestionFormComponent extends React.Component {
       codeSnippet: '',
       appliedTags: [],
       snackbar: true,
+      showCode: false,
     });
     this.refs.tagBar.setState({ searchText: '' });
   }
@@ -153,7 +152,7 @@ class QuestionFormComponent extends React.Component {
               floatingLabelText="Ask a question..."
               onChange={this.handleInputChange} />
             <FlatButton onClick={this.toggleCode}
-              label={this.state.showCode ? 'Hide code' : 'Add some code'}
+              label={this.state.showCode ? 'Hide code' : this.state.showButtonText}
               style={{ backgroundColor: '#e0e0e0' }}
               />
               {this.state.showCode ? codeZone : null}
