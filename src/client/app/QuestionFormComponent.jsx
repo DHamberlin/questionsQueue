@@ -138,23 +138,10 @@ class QuestionFormComponent extends React.Component {
               onChange={this.handleInputChange} />
             <CodeZone
               name="codeSnippet"
-<<<<<<< HEAD
               onChange={this.handleInputChange}
               codeSnippet={this.state.codeSnippet}
               value = {this.state.codeSnippet}
               />
-=======
-              className="code-text-form"
-              fullWidth={true}
-              value={this.state.codeSnippet}
-              multiLine={true}
-              floatingLabelText="Add a code snippet (optional)"
-              onChange={this.handleInputChange} />
-            <textarea
-              ref="codeZone">
-                yo
-              </textarea>
->>>>>>> wee code highlighting
             <br/>
             <AutoComplete
               ref="tagBar"
